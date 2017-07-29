@@ -58,13 +58,13 @@ cprequire_test(["inline:com-zipwhip-widget-font2gcode"], function(myWidget) {
     
     // load 3dviewer
     // have to tweak our own widget to get it above the 3dviewer
-    $('#' + myWidget.id).css('position', 'relative');
+    $('#' + myWidget.id).css('position', 'absolute');
     //$('#' + myWidget.id).css('background', 'none');
     $('#' + myWidget.id).css('width', '320px');
     $('body').prepend('<div id="3dviewer"></div>');
     chilipeppr.load(
       "#3dviewer",
-      "http://raw.githubusercontent.com/chilipeppr/widget-3dviewer/master/auto-generated-widget.html",
+      "http://raw.githubusercontent.com/dchote/widget-3dviewer/master/auto-generated-widget.html",
       function() {
         cprequire(['inline:com-chilipeppr-widget-3dviewer'], function (threed) {
             threed.init({
@@ -290,27 +290,27 @@ Pass in {<br>
                                 console.log("giving up on trying to get 3d");
                             } else {
                                 console.log("succeeded on getting 3d after attempts:", attempts);
+                                that.onInit3dSuccess();
+                                
                                 if (callback) {
                                     callback();
-                                } else {
-                                    that.onInit3dSuccess();
                                 }
                             }
                         }, 5000);
                     } else {
                         console.log("succeeded on getting 3d after attempts:", attempts);
+                        that.onInit3dSuccess();
+                        
                         if (callback) {
                             callback();
-                        } else {
-                            that.onInit3dSuccess();
                         }
                     }
                 }, 1000);
             } else {
+                this.onInit3dSuccess();
+                
                 if (callback) {
                     callback();
-                } else {
-                    this.onInit3dSuccess();
                 }
             }
 
@@ -967,13 +967,9 @@ Pass in {<br>
 			// threejs.org/examples/fonts/helvetiker_bold.typeface.js
 			// https://i2dcui.appspot.com/js/three/fonts/
 			var url = '' +
-			    //'https://i2dcui.appspot.com/js/three/fonts/' + 
-			    //'https://i2dcui.appspot.com/slingshot?url=http://threejs.org/examples/fonts/' +
-			 //   'https://i2dcui.appspot.com/slingshot?url=https://raw.githubusercontent.com/mrdoob/three.js/master/examples/fonts/' +
 			    'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/fonts/' +
 			    fontOpts.fontName + '_' + 
 			    fontOpts.fontWeight + 
-			 //   '.typeface.js';
 			    '.typeface.json';
 
             // see if font is loaded already
@@ -1011,16 +1007,9 @@ Pass in {<br>
         onInit3dSuccess: function () {
             console.log("onInit3dSuccess. That means we finally got an object back.");
             this.clear3dViewer();
-            
-            // open the last file
-            //var that = this;
-            //setTimeout(function () {
-                //that.open();
-            //}, 1000);
-            //this.drawtexterator();
-            //this.drawText();
             this.onRender();
         },
+        
         obj3d: null, // gets the 3dviewer obj stored in here on callback
         obj3dmeta: null, // gets metadata for 3dviewer
         userCallbackForGet3dObj: null,
@@ -1044,13 +1033,9 @@ Pass in {<br>
         is3dViewerReady: false,
         clear3dViewer: function () {
             console.log("clearing 3d viewer");
-            chilipeppr.publish("/com-chilipeppr-widget-3dviewer/sceneclear");
-            //if (this.obj3d) this.obj3d.children = [];            
-            /*
-            this.obj3d.children.forEach(function(obj3d) {
-                chilipeppr.publish("/com-chilipeppr-widget-3dviewer/sceneremove", obj3d);
-            });
-            */
+            
+            chilipeppr.publish("/com-chilipeppr-widget-3dviewer/sceneclear", "");
+            
             this.is3dViewerReady = true;
             
             // this should reset the 3d viewer to resize to high dpi displays
