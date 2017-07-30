@@ -290,27 +290,30 @@ Pass in {<br>
                                 console.log("giving up on trying to get 3d");
                             } else {
                                 console.log("succeeded on getting 3d after attempts:", attempts);
-                                that.onInit3dSuccess();
                                 
                                 if (callback) {
                                     callback();
+                                } else {
+                                    that.onInit3dSuccess();
                                 }
                             }
                         }, 5000);
                     } else {
                         console.log("succeeded on getting 3d after attempts:", attempts);
-                        that.onInit3dSuccess();
                         
                         if (callback) {
                             callback();
+                        } else {
+                            that.onInit3dSuccess();
                         }
                     }
                 }, 1000);
             } else {
-                this.onInit3dSuccess();
                 
                 if (callback) {
                     callback();
+                } else {
+                    this.onInit3dSuccess();
                 }
             }
 
